@@ -458,7 +458,7 @@ const Students = () => {
             <div>
               <label>Select Student</label>
               <select className="form-control" onChange={(e) => {
-                const s = students.find(stud => stud.student_id === parseInt(e.target.value));
+                const s = students.find(stud => stud.student_id === e.target.value);
                 setIdCardStudent(s);
               }}>
                 <option value="">-- Choose Student --</option>
@@ -466,9 +466,31 @@ const Students = () => {
               </select>
 
               {idCardStudent && (
-                <button className="btn btn-primary" style={{ marginTop: '1.5rem' }} onClick={() => window.print()}>
-                  Print ID Card
-                </button>
+                <>
+                  <style>{`
+                    @media print {
+                      body * {
+                        visibility: hidden;
+                      }
+                      #student-id-card, #student-id-card * {
+                        visibility: visible;
+                      }
+                      #student-id-card {
+                        position: absolute;
+                        left: 50%;
+                        top: 50%;
+                        transform: translate(-50%, -50%);
+                        border: 2px solid var(--primary-color) !important;
+                        box-shadow: none !important;
+                        -webkit-print-color-adjust: exact;
+                        print-color-adjust: exact;
+                      }
+                    }
+                  `}</style>
+                  <button className="btn btn-primary" style={{ marginTop: '1.5rem' }} onClick={() => window.print()}>
+                    Print ID Card
+                  </button>
+                </>
               )}
             </div>
 
@@ -510,7 +532,15 @@ const Students = () => {
                     overflow: 'hidden',
                     marginTop: '0.5rem'
                   }}>
-                    <span style={{ fontSize: '0.8rem', color: '#9ca3af' }}>PHOTO</span>
+                    {idCardStudent.avatar ? (
+                      <img 
+                        src={idCardStudent.avatar.startsWith('http') ? idCardStudent.avatar : `https://school-management-backend-fxie.onrender.com${idCardStudent.avatar}`} 
+                        alt="Profile" 
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+                      />
+                    ) : (
+                      <span style={{ fontSize: '0.8rem', color: '#9ca3af' }}>PHOTO</span>
+                    )}
                   </div>
 
                   {/* Details */}

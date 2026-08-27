@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { FaSchool, FaLock, FaEnvelope, FaKey, FaShieldAlt } from 'react-icons/fa';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://school-management-backend-fxie.onrender.com';
 
 const Login = () => {
   const { login, verify2FA } = useContext(AuthContext);
