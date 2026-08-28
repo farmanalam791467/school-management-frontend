@@ -22,7 +22,8 @@ const Students = () => {
   const [admissionForm, setAdmissionForm] = useState({
     name: '', email: '', password: '', phone: '', gender: 'Male', dob: '', roll_number: '', admission_no: '',
     class_id: '', section_id: '', blood_group: 'O+', medical_history: '',
-    father_name: '', father_phone: '', father_occupation: '', mother_name: '', mother_phone: '', mother_occupation: '', address: ''
+    father_name: '', father_phone: '', father_occupation: '', mother_name: '', mother_phone: '', mother_occupation: '', address: '',
+    avatar: ''
   });
 
   // Promotion States
@@ -86,7 +87,8 @@ const Students = () => {
       setAdmissionForm({
         name: '', email: '', password: '', phone: '', gender: 'Male', dob: '', roll_number: '', admission_no: '',
         class_id: '', section_id: '', blood_group: 'O+', medical_history: '',
-        father_name: '', father_phone: '', father_occupation: '', mother_name: '', mother_phone: '', mother_occupation: '', address: ''
+        father_name: '', father_phone: '', father_occupation: '', mother_name: '', mother_phone: '', mother_occupation: '', address: '',
+        avatar: ''
       });
     } catch (err) {
       alert(err.response?.data?.message || 'Error during admission');
@@ -347,6 +349,11 @@ const Students = () => {
                 <option value="AB+">AB+</option>
                 <option value="AB-">AB-</option>
               </select>
+            </div>
+
+            <div className="form-group">
+              <label>Profile Photo URL</label>
+              <input type="text" className="form-control" placeholder="e.g. https://images.unsplash.com/photo-..." value={admissionForm.avatar} onChange={(e) => setAdmissionForm({...admissionForm, avatar: e.target.value})} />
             </div>
           </div>
 
