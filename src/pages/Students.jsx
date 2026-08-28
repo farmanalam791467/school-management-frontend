@@ -76,6 +76,26 @@ const Students = () => {
     }
   };
 
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    try {
+      const res = await api.post('/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setAdmissionForm({ ...admissionForm, avatar: res.data.url });
+      alert('Photo uploaded successfully!');
+    } catch (err) {
+      alert(err.response?.data?.message || 'Error uploading photo');
+    }
+  };
+
   const handleAdmissionSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -351,9 +371,52 @@ const Students = () => {
               </select>
             </div>
 
-            <div className="form-group">
-              <label>Profile Photo URL</label>
-              <input type="text" className="form-control" placeholder="e.g. https://images.unsplash.com/photo-..." value={admissionForm.avatar} onChange={(e) => setAdmissionForm({...admissionForm, avatar: e.target.value})} />
+            <div className="form-group" style={{ gridColumn: 'span 2' }}>
+              <label>Student Profile Photo</label>
+              <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  style={{ display: 'none' }} 
+                  id="student-photo-file" 
+                  onChange={handlePhotoUpload} 
+                />
+                <label 
+                  htmlFor="student-photo-file" 
+                  className="btn" 
+                  style={{ 
+                    background: 'var(--primary-color)', 
+                    color: '#fff', 
+                    padding: '0.5rem 1rem', 
+                    borderRadius: '0.375rem', 
+                    cursor: 'pointer', 
+                    fontSize: '0.85rem',
+                    fontWeight: 600,
+                    margin: 0,
+                    whiteSpace: 'nowrap'
+                  }}
+                >
+                  Choose Image File
+                </label>
+                <input 
+                  type="text" 
+                  className="form-control" 
+                  placeholder="Or paste an image URL directly" 
+                  value={admissionForm.avatar} 
+                  onChange={(e) => setAdmissionForm({...admissionForm, avatar: e.target.value})} 
+                  style={{ flex: 1 }}
+                />
+              </div>
+              {admissionForm.avatar && (
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '0.5rem' }}>
+                  <img 
+                    src={admissionForm.avatar.startsWith('http') ? admissionForm.avatar : `https://school-management-backend-fxie.onrender.com${admissionForm.avatar}`} 
+                    alt="Preview" 
+                    style={{ width: '45px', height: '45px', borderRadius: '50%', objectFit: 'cover', border: '1px solid var(--border-color)' }} 
+                  />
+                  <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)' }}>Live preview of selected student photo</span>
+                </div>
+              )}
             </div>
           </div>
 
